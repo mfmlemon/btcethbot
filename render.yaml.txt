@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: banana-arb-keepalive
+    env: python
+    plan: free
+    buildCommand: ""
+    startCommand: "python keep_alive.py"
