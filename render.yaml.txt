@@ -1,7 +1,12 @@
 services:
   - type: web
-    name: banana-arb-keepalive
+    name: crypto-arb-bot
     env: python
-    plan: free
-    buildCommand: ""
-    startCommand: "python keep_alive.py"
+    repo: https://github.com/mfmlemon/btcethbot.git
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    envVars:
+      - key: TELEGRAM_TOKEN
+      value:
+7345979104:AAEwHyn5PbYG3tkl6mJJ2vSejsCVeljkTMk
