@@ -2,11 +2,10 @@ services:
   - type: web
     name: crypto-arb-bot
     env: python
-    repo: https://github.com/mfmlemon/btcethbot.git
+    repo: https://github.com/mfmlemon/btcethbot
     branch: main
     buildCommand: pip install -r requirements.txt
     startCommand: python main.py
     envVars:
       - key: TELEGRAM_TOKEN
-      value:
-7345979104:AAEwHyn5PbYG3tkl6mJJ2vSejsCVeljkTMk
+        value: 7345979104:AAEwHyn5PbYG3tkl6mJJ2vSejsCVeljkTMk
