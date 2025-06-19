@@ -1,0 +1,6 @@
+Flask
+pandas
+requests
+ta
+nest_asyncio
+python-telegram-bot
