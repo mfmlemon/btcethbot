@@ -10,7 +10,7 @@ from telegram import Bot
 nest_asyncio.apply()
 
 # === CONFIGURATION ===
-COINS = ["bitcoin", "ethereum", "cosmos", "dexe", "bitget-token"]
+COINS = ["bitcoin", "ethereum", "cosmos", "dexe", "pepe"]
 COINGECKO_API_URL = "https://api.coingecko.com/api/v3/coins/{coin}/market_chart"
 DAYS = 2
 VS_CURRENCY = "usd"
@@ -54,6 +54,40 @@ async def send_alert(text):
 
 async def analyze():
     signal_found = False
+
+    # === Step 1: Analyze BTC ===
+    btc_prices = fetch_prices("bitcoin")
+    if not btc_prices:
+        return
+
+    btc_z = z_score(btc_prices)
+    btc_df = indicators(btc_prices)
+    btc_price = btc_prices[-1]
+    btc_ema = btc_df["ema"].iloc[-1]
+    btc_rsi = btc_df["rsi"].iloc[-1]
+
+    btc_bullish = btc_price > btc_ema and 50 < btc_rsi < RSI_OVERBOUGHT and btc_z >= Z_SCORE_THRESHOLD
+    btc_bearish = btc_price < btc_ema and btc_rsi > RSI_OVERSOLD and btc_z <= -Z_SCORE_THRESHOLD
+
+    # === Step 2: If BTC strong trend, analyze PEPE ===
+    if btc_bullish or btc_bearish:
+        pepe_prices = fetch_prices("pepe")
+        if pepe_prices:
+            pepe_df = indicators(pepe_prices)
+            pepe_price = pepe_prices[-1]
+            pepe_ema = pepe_df["ema"].iloc[-1]
+            pepe_rsi = pepe_df["rsi"].iloc[-1]
+
+            if btc_bullish and pepe_price > pepe_ema and pepe_rsi < RSI_OVERBOUGHT:
+                signal = f"🔥 PEPE LONG | BTC Trend Bullish | PEPE: {pepe_price:.6f} | RSI: {pepe_rsi:.2f}"
+                await send_alert(signal)
+                signal_found = True
+            elif btc_bearish and pepe_price < pepe_ema and pepe_rsi > RSI_OVERSOLD:
+                signal = f"⚠️ PEPE SHORT | BTC Trend Bearish | PEPE: {pepe_price:.6f} | RSI: {pepe_rsi:.2f}"
+                await send_alert(signal)
+                signal_found = True
+
+    # === Step 3: Continue your original loop for other coins ===
     for coin in COINS:
         prices = fetch_prices(coin)
         if not prices:
