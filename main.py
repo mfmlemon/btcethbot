@@ -11,7 +11,7 @@ nest_asyncio.apply()
 
 # === CONFIGURATION ===
 # You can add/remove coins freely here. This list is used in your main loop.
-COINS = ["bitcoin", "ethereum", "cosmos", "dexe", "pepe"]
+COINS = ["bitcoin", "conflux-token", "bitget-token", "arbitrum", "pepe"]
 
 COINGECKO_API_URL = "https://api.coingecko.com/api/v3/coins/{coin}/market_chart"
 DAYS = 2
