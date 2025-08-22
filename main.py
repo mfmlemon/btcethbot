@@ -108,7 +108,7 @@ async def analyze():
 
         signal = None
         if z >= TP_THRESHOLD:
-            signal = f"✅ TAKE PROFIT: {coin.upper()} Z-score {z:.2f}"
+            signal = f"✅ TAKE PROFIT: {coin.upper()} | Price: {price:.2f} | Z-score {z:.2f}"
         elif z <= SL_THRESHOLD:
             signal = f"⚠️ STOP LOSS: {coin.upper()} Z-score {z:.2f}"
         elif abs(z) >= Z_SCORE_THRESHOLD:
